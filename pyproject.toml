@@ -1,0 +1,12 @@
+[build-system]
+requires=["setuptools>=68"]
+build-backend="setuptools.build_meta"
+[project]
+name="lr-detector-resilience-lab"
+version="0.1.0"
+description="Safe feature-space experiments for measuring detector robustness under drift"
+requires-python=">=3.10"
+[project.scripts]
+detector-resilience="resilience_lab.cli:main"
+[tool.setuptools.packages.find]
+where=["src"]
