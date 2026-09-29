@@ -24,8 +24,12 @@ jobs:
       - run: python -m unittest discover -s tests
       - name: Generate drift curve
         run: detector-resilience examples/features.csv --seed 7 --threshold 0.5 --thresholds 0.3,0.5,0.7 --strengths 0,0.5,1,1.5 --output resilience-report.json
+      - name: Hash resilience report
+        run: sha256sum resilience-report.json > resilience-report.json.sha256
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: detector-resilience-report-${{ matrix.python-version }}
-          path: resilience-report.json
+          path: |
+            resilience-report.json
+            resilience-report.json.sha256
