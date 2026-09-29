@@ -90,6 +90,31 @@ detector-resilience examples/features.csv \
 
 <!-- LR-CONTENT-UPGRADE-2:END -->
 
+<!-- LR-DEEP-CONTENT-2:START -->
+### Drift-strength curve
+
+除了固定 `--strength` 和多阈值扫描，现在还可以直接观察 drift 强度曲线：
+
+```bash
+detector-resilience examples/features.csv \
+  --seed 7 \
+  --threshold 0.5 \
+  --thresholds 0.3,0.5,0.7 \
+  --strengths 0,0.5,1,1.5 \
+  --output report.json
+```
+
+每个强度点记录：
+
+- baseline recall；
+- drift 后 recall；
+- recall drop；
+- drift 后 FPR；
+- flipped malicious sample 数。
+
+`strength=0` 作为自检点，理论上不应产生 drift recall drop。CI 会自动运行这组实验并保存 JSON 报告。
+<!-- LR-DEEP-CONTENT-2:END -->
+
 <!-- LR-RELATED:START -->
 ### Related LR Lab projects
 - [Detection Threshold Lab](https://github.com/LLR6/lr-detection-lab) — inspect threshold trade-offs before model drift.
