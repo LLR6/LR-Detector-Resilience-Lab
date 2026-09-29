@@ -1,21 +1,31 @@
 # Roadmap
 
-## Near term
+## Current foundation
 
-- Multi-seed drift-strength curves.
-- Confidence intervals for recall-drop estimates.
-- Separate drift families by feature subset.
-- Calibration-error reporting.
+- Safe numeric feature-space dataset
+- Deterministic drift perturbation
+- Baseline / drift metrics
+- Flipped malicious sample report
+- Threshold sensitivity sweep
+- Drift-strength curve
+- CI-generated experiment report
 
-## Medium term
+## Next
 
-- Held-out train/test splits.
-- Multiple transparent baseline models.
-- Distribution-distance measurements.
-- Compare robustness metrics across synthetic drift families.
+- multiple drift families;
+- repeated-seed confidence summaries;
+- feature-wise sensitivity attribution;
+- calibration shift metrics;
+- explicit dataset split support.
 
-## Research questions
+## Later
 
-- Which drift metrics correlate with harmful recall loss?
-- How stable are conclusions across seeds and thresholds?
-- When do aggregate robustness numbers hide a small set of severe sample flips?
+- comparison across simple classifier families;
+- robustness-vs-complexity study;
+- report visualization.
+
+## Non-goals
+
+- executable mutation;
+- malware packing or AV bypass;
+- claiming real-world endpoint evasion from feature-vector experiments.
