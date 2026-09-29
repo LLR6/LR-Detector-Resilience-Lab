@@ -1,6 +1,6 @@
 import unittest
 from pathlib import Path
-from resilience_lab.cli import experiment,load,score,threshold_sweep,train
+from resilience_lab.cli import experiment,load,score,strength_sweep,threshold_sweep,train
 
 DATA=Path(__file__).parents[1]/"examples/features.csv"
 class LabTests(unittest.TestCase):
@@ -21,4 +21,13 @@ class LabTests(unittest.TestCase):
  def test_experiment_includes_optional_sweep(self):
   report=experiment(load(DATA),7,1.0,.5,[.4,.6])
   self.assertEqual(len(report["threshold_sweep"]),2)
+ def test_strength_sweep_tracks_drift_curve(self):
+  rows=load(DATA)
+  curve=strength_sweep(rows,7,[0,.5,1.0],.5)
+  self.assertEqual([x["strength"] for x in curve],[0,.5,1.0])
+  self.assertEqual(curve[0]["recall_drop"],0)
+  self.assertTrue(all("flipped_malicious_samples" in x for x in curve))
+ def test_experiment_includes_optional_strength_sweep(self):
+  report=experiment(load(DATA),7,1.0,.5,None,[0,1.0])
+  self.assertEqual(len(report["strength_sweep"]),2)
 if __name__=="__main__":unittest.main()
