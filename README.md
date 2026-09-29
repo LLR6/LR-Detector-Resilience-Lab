@@ -11,6 +11,10 @@
 <p align="center"><a href="https://github.com/LLR6">Profile</a> · <a href="https://github.com/LLR6?tab=repositories">All projects</a> · <a href="https://github.com/LLR6/LR-Detector-Resilience-Lab/issues">Issues</a></p>
 <!-- LR-LAB-CHROME:END -->
 
+<!-- LR-FAMILY-NAV:START -->
+<p align="center"><a href="#5-分钟-demo">5-minute demo</a> · <a href="./examples">Examples</a> · <a href="./src">Source</a> · <a href="./tests">Tests</a></p>
+<!-- LR-FAMILY-NAV:END -->
+
 
 <p align="center"><img src="./docs/media/social-preview.svg" alt="Detector Resilience Lab" width="100%"></p>
 <p align="center"><img src="./docs/media/demo.gif" alt="Detector Resilience Lab reproducible demo" width="100%"></p>
@@ -53,6 +57,13 @@ detector-resilience examples/features.csv --seed 7 --output report.json
 加入交叉验证、校准曲线、多个分类器、特征归因、漂移检测与公开安全数据集适配器。
 
 作者：LLR6 · MIT License
+
+<!-- LR-RELATED:START -->
+### Related LR Lab projects
+- [Detection Threshold Lab](https://github.com/LLR6/lr-detection-lab) — inspect threshold trade-offs before model drift.
+- [LR-SOC-Copilot](https://github.com/LLR6/LR-SOC-Copilot) — move from model output to evidence-backed investigation.
+- [NightWatch](https://github.com/LLR6/Cybersecurity-Detection-Engineering-Android-Automation-Learning-by-Building) — rule-based detection and event correlation.
+<!-- LR-RELATED:END -->
 
 <!-- LR-LAB-FOOTER:START -->
 ---
