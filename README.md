@@ -1,5 +1,17 @@
 # Detector Resilience Lab
 
+<!-- LR-LAB-CHROME:START -->
+<p align="center">
+  <a href="https://github.com/LLR6"><img alt="LR Lab" src="https://img.shields.io/badge/LR_LAB-0x4C52-0D1117?style=for-the-badge&logo=github&logoColor=white"></a>
+  <img alt="ML SECURITY" src="https://img.shields.io/badge/ML_SECURITY-EC4899?style=for-the-badge">
+</p>
+<p align="center"><strong>Measure how detection fails.</strong><br><sub>Safe feature-drift experiments for defensive models</sub></p>
+<p align="center"><a href="https://github.com/LLR6/LR-Detector-Resilience-Lab/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/LLR6/LR-Detector-Resilience-Lab?style=flat-square&logo=github&label=stars"></a>
+  <img alt="Last commit" src="https://img.shields.io/github/last-commit/LLR6/LR-Detector-Resilience-Lab?style=flat-square"> <img alt="Maintained" src="https://img.shields.io/badge/status-active-success?style=flat-square"></p>
+<p align="center"><a href="https://github.com/LLR6">Profile</a> · <a href="https://github.com/LLR6?tab=repositories">All projects</a> · <a href="https://github.com/LLR6/LR-Detector-Resilience-Lab/issues">Issues</a></p>
+<!-- LR-LAB-CHROME:END -->
+
+
 <p align="center"><img src="./docs/media/social-preview.svg" alt="Detector Resilience Lab" width="100%"></p>
 <p align="center"><img src="./docs/media/demo.gif" alt="Detector Resilience Lab reproducible demo" width="100%"></p>
 <p align="center"><strong>Measure how detection fails.</strong></p>
@@ -41,3 +53,9 @@ detector-resilience examples/features.csv --seed 7 --output report.json
 加入交叉验证、校准曲线、多个分类器、特征归因、漂移检测与公开安全数据集适配器。
 
 作者：LLR6 · MIT License
+
+<!-- LR-LAB-FOOTER:START -->
+---
+<p align="center"><sub>Part of <a href="https://github.com/LLR6">LR Lab</a> · Security × AI × Android × Automation</sub><br><sub>Build things that are useful, inspectable, and reproducible.</sub></p>
+<!-- LR-LAB-FOOTER:END -->
+
