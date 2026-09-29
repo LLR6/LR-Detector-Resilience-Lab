@@ -22,6 +22,16 @@ jobs:
       - name: CLI version smoke test
         run: detector-resilience --version
       - run: python -m unittest discover -s tests
+      - name: Compile package
+        run: python -m compileall -q src
+      - name: Build wheel
+        run: python -m pip wheel . --no-deps -w dist
+      - name: Validate JSON Schemas
+        shell: bash
+        run: |
+          if compgen -G "schemas/*.json" > /dev/null; then
+            for f in schemas/*.json; do python -m json.tool "$f" > /dev/null; done
+          fi
       - name: Generate drift curve
         run: detector-resilience examples/features.csv --seed 7 --threshold 0.5 --thresholds 0.3,0.5,0.7 --strengths 0,0.5,1,1.5 --output resilience-report.json
       - name: Hash resilience report
