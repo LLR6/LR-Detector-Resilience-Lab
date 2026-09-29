@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Detector Resilience report",
+  "type": "object",
+  "required": [
+    "schema",
+    "seed",
+    "strength",
+    "threshold",
+    "baseline",
+    "after_feature_drift",
+    "flipped_malicious_samples",
+    "boundary"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lr-detector-resilience/v2"
+    },
+    "seed": {
+      "type": "integer"
+    },
+    "strength": {
+      "type": "number",
+      "minimum": 0
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "baseline": {
+      "type": "object",
+      "required": [
+        "tp",
+        "fp",
+        "tn",
+        "fn",
+        "recall",
+        "false_positive_rate"
+      ]
+    },
+    "after_feature_drift": {
+      "type": "object",
+      "required": [
+        "tp",
+        "fp",
+        "tn",
+        "fn",
+        "recall",
+        "false_positive_rate"
+      ]
+    },
+    "flipped_malicious_samples": {
+      "type": "array"
+    },
+    "boundary": {
+      "type": "string"
+    },
+    "threshold_sweep": {
+      "type": "array"
+    },
+    "strength_sweep": {
+      "type": "array"
+    }
+  }
+}
