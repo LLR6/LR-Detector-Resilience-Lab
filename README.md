@@ -122,6 +122,14 @@ detector-resilience examples/features.csv \
 - [NightWatch](https://github.com/LLR6/Cybersecurity-Detection-Engineering-Android-Automation-Learning-by-Building) — rule-based detection and event correlation.
 <!-- LR-RELATED:END -->
 
+<!-- LR-ENGINEERING-REF:START -->
+## Engineering Reference
+
+[Architecture](docs/ARCHITECTURE.md) · [Security](SECURITY.md) · [Contributing](CONTRIBUTING.md) · [Changelog](CHANGELOG.md) · [Release checklist](docs/RELEASE_CHECKLIST.md) · [Report schema](schemas/resilience-report.schema.json)
+
+These files document the project's architecture, safety boundaries, reproducibility assumptions and release process.
+<!-- LR-ENGINEERING-REF:END -->
+
 <!-- LR-LAB-FOOTER:START -->
 ---
 <p align="center"><sub>Part of <a href="https://github.com/LLR6">LR Lab</a> · Security × AI × Android × Automation</sub><br><sub>Build things that are useful, inspectable, and reproducible.</sub></p>
