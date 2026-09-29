@@ -1,5 +1,13 @@
 import argparse, csv, json, math, random, sys
 from pathlib import Path
+from importlib.metadata import PackageNotFoundError, version
+
+def package_version():
+    try:
+        return version("lr-detector-resilience-lab")
+    except PackageNotFoundError:
+        return "dev"
+
 
 FEATURES=("entropy","imports","strings","sections","signed","debug_symbols")
 
@@ -107,6 +115,7 @@ def experiment(rows,seed=7,strength=1.0,threshold=.5,thresholds=None,strengths=N
 
 def main(argv=None):
     p=argparse.ArgumentParser(description="Measure detector robustness under safe feature-space drift")
+    p.add_argument("--version",action="version",version=f"%(prog)s {package_version()}")
     p.add_argument("dataset",type=Path); p.add_argument("--seed",type=int,default=7)
     p.add_argument("--strength",type=float,default=1.0); p.add_argument("--threshold",type=float,default=.5)
     p.add_argument("--thresholds",help="optional comma-separated threshold sweep, e.g. 0.3,0.5,0.7")
