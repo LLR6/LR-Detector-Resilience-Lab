@@ -71,7 +71,21 @@ def threshold_sweep(rows,base_scores,after_scores,thresholds):
         })
     return out
 
-def experiment(rows,seed=7,strength=1.0,threshold=.5,thresholds=None):
+def strength_sweep(rows,seed,strengths,threshold):
+    out=[]
+    for strength in strengths:
+        report=experiment(rows,seed,strength,threshold,None,None)
+        out.append({
+            "strength":strength,
+            "baseline_recall":report["baseline"]["recall"],
+            "after_recall":report["after_feature_drift"]["recall"],
+            "recall_drop":round(report["baseline"]["recall"]-report["after_feature_drift"]["recall"],4),
+            "after_false_positive_rate":report["after_feature_drift"]["false_positive_rate"],
+            "flipped_malicious_samples":len(report["flipped_malicious_samples"]),
+        })
+    return out
+
+def experiment(rows,seed=7,strength=1.0,threshold=.5,thresholds=None,strengths=None):
     model=train(rows); base=[score(model,r) for r in rows]
     rng=random.Random(seed); changed=[mutate(r,rng,strength) if r['label'] else dict(r) for r in rows]
     after=[score(model,r) for r in changed]
@@ -86,6 +100,9 @@ def experiment(rows,seed=7,strength=1.0,threshold=.5,thresholds=None):
     if thresholds:
         report["threshold_sweep"]=threshold_sweep(rows,base,after,thresholds)
         report["threshold_note"]="Threshold sweep measures sensitivity of the same fixed model before/after safe feature-space drift."
+    if strengths:
+        report["strength_sweep"]=strength_sweep(rows,seed,strengths,threshold)
+        report["strength_note"]="Strength sweep repeats the same deterministic feature-space perturbation family at increasing magnitudes."
     return report
 
 def main(argv=None):
@@ -93,16 +110,21 @@ def main(argv=None):
     p.add_argument("dataset",type=Path); p.add_argument("--seed",type=int,default=7)
     p.add_argument("--strength",type=float,default=1.0); p.add_argument("--threshold",type=float,default=.5)
     p.add_argument("--thresholds",help="optional comma-separated threshold sweep, e.g. 0.3,0.5,0.7")
+    p.add_argument("--strengths",help="optional comma-separated drift strengths, e.g. 0,0.5,1,1.5")
     p.add_argument("--output",type=Path)
     a=p.parse_args(argv)
     try:
         thresholds=None
+        strengths=None
         if a.thresholds:
             thresholds=[float(x) for x in a.thresholds.split(",")]
             if not thresholds or any(not 0<=x<=1 for x in thresholds):raise ValueError("thresholds must be in 0..1")
+        if a.strengths:
+            strengths=[float(x) for x in a.strengths.split(",")]
+            if not strengths or any(x<0 for x in strengths):raise ValueError("strengths must be >= 0")
         if not 0<=a.threshold<=1:raise ValueError("threshold must be in 0..1")
         if a.strength<0:raise ValueError("strength must be >= 0")
-        r=experiment(load(a.dataset),a.seed,a.strength,a.threshold,thresholds)
+        r=experiment(load(a.dataset),a.seed,a.strength,a.threshold,thresholds,strengths)
     except ValueError as e:p.error(str(e))
     text=json.dumps(r,ensure_ascii=False,indent=2)+"\n"
     a.output.write_text(text,encoding="utf-8") if a.output else print(text,end="")
