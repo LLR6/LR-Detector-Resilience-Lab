@@ -58,6 +58,38 @@ detector-resilience examples/features.csv --seed 7 --output report.json
 
 作者：LLR6 · MIT License
 
+<!-- LR-CONTENT-UPGRADE-2:START -->
+## v0.2：不要只看一个分类阈值
+
+模型在 `0.5` 阈值下掉 Recall，并不代表整个决策边界都同样脆弱。
+
+现在可以同时扫描多个阈值：
+
+```bash
+detector-resilience examples/features.csv \
+  --seed 7 \
+  --strength 1.0 \
+  --threshold 0.5 \
+  --thresholds 0.3,0.4,0.5,0.6,0.7 \
+  --output report.json
+```
+
+每个阈值都会记录：
+
+- baseline TP / FP / TN / FN
+- drift 后 TP / FP / TN / FN
+- `recall_drop`
+- `false_positive_rate_delta`
+
+这样可以区分两件事：
+
+1. 模型本身在 feature drift 后整体退化；
+2. 只是某个固定 operating threshold 对 drift 特别敏感。
+
+实验仍只修改数值特征 CSV，不处理或生成任何可执行文件。
+
+<!-- LR-CONTENT-UPGRADE-2:END -->
+
 <!-- LR-RELATED:START -->
 ### Related LR Lab projects
 - [Detection Threshold Lab](https://github.com/LLR6/lr-detection-lab) — inspect threshold trade-offs before model drift.
