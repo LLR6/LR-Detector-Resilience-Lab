@@ -39,6 +39,13 @@ jobs:
         run: python scripts/validate_json_schema.py schemas/resilience-report.schema.json resilience-report.json
       - name: Hash resilience report
         run: sha256sum resilience-report.json > resilience-report.json.sha256
+      - name: Smoke-test built wheel
+        shell: bash
+        run: |
+          python -m venv /tmp/lr-wheel-smoke
+          /tmp/lr-wheel-smoke/bin/python -m pip install --upgrade pip
+          /tmp/lr-wheel-smoke/bin/python -m pip install dist/*.whl
+          /tmp/lr-wheel-smoke/bin/detector-resilience --version
       - uses: actions/upload-artifact@v4
         if: always()
         with:
