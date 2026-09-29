@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software in research, teaching, or a technical report, please cite it using the metadata below."
+title: "LR Detector Resilience Lab"
+type: software
+authors:
+  - family-names: "LLR6"
+version: "0.2.0"
+date-released: 2026-09-29
+repository-code: "https://github.com/LLR6/LR-Detector-Resilience-Lab"
+url: "https://github.com/LLR6/LR-Detector-Resilience-Lab"
+abstract: >-
+  Safe feature-space experiments for measuring defensive detector robustness under distribution drift.
+license: MIT
