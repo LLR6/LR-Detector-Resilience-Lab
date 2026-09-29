@@ -57,7 +57,21 @@ def metrics(rows,scores,threshold=.5):
     return {"tp":tp,"fp":fp,"tn":tn,"fn":fn,"recall":round(tp/(tp+fn),4) if tp+fn else 0,
             "false_positive_rate":round(fp/(fp+tn),4) if fp+tn else 0}
 
-def experiment(rows,seed=7,strength=1.0,threshold=.5):
+def threshold_sweep(rows,base_scores,after_scores,thresholds):
+    out=[]
+    for threshold in thresholds:
+        before=metrics(rows,base_scores,threshold)
+        after=metrics(rows,after_scores,threshold)
+        out.append({
+            "threshold":threshold,
+            "baseline":before,
+            "after_feature_drift":after,
+            "recall_drop":round(before["recall"]-after["recall"],4),
+            "false_positive_rate_delta":round(after["false_positive_rate"]-before["false_positive_rate"],4),
+        })
+    return out
+
+def experiment(rows,seed=7,strength=1.0,threshold=.5,thresholds=None):
     model=train(rows); base=[score(model,r) for r in rows]
     rng=random.Random(seed); changed=[mutate(r,rng,strength) if r['label'] else dict(r) for r in rows]
     after=[score(model,r) for r in changed]
@@ -66,17 +80,29 @@ def experiment(rows,seed=7,strength=1.0,threshold=.5):
         if old['label'] and (a>=threshold)!=(b>=threshold):
             cases.append({"id":old['id'],"before_score":round(a,4),"after_score":round(b,4),
                           "feature_delta":{k:round(new[k]-old[k],4) for k in FEATURES if new[k]!=old[k]}})
-    return {"schema":"lr-detector-resilience/v1","seed":seed,"strength":strength,"threshold":threshold,
+    report={"schema":"lr-detector-resilience/v2","seed":seed,"strength":strength,"threshold":threshold,
             "baseline":metrics(rows,base,threshold),"after_feature_drift":metrics(changed,after,threshold),
             "flipped_malicious_samples":cases,"boundary":"Feature-vector simulation only; no executable mutation or AV bypass payloads."}
+    if thresholds:
+        report["threshold_sweep"]=threshold_sweep(rows,base,after,thresholds)
+        report["threshold_note"]="Threshold sweep measures sensitivity of the same fixed model before/after safe feature-space drift."
+    return report
 
 def main(argv=None):
     p=argparse.ArgumentParser(description="Measure detector robustness under safe feature-space drift")
     p.add_argument("dataset",type=Path); p.add_argument("--seed",type=int,default=7)
     p.add_argument("--strength",type=float,default=1.0); p.add_argument("--threshold",type=float,default=.5)
+    p.add_argument("--thresholds",help="optional comma-separated threshold sweep, e.g. 0.3,0.5,0.7")
     p.add_argument("--output",type=Path)
     a=p.parse_args(argv)
-    try:r=experiment(load(a.dataset),a.seed,a.strength,a.threshold)
+    try:
+        thresholds=None
+        if a.thresholds:
+            thresholds=[float(x) for x in a.thresholds.split(",")]
+            if not thresholds or any(not 0<=x<=1 for x in thresholds):raise ValueError("thresholds must be in 0..1")
+        if not 0<=a.threshold<=1:raise ValueError("threshold must be in 0..1")
+        if a.strength<0:raise ValueError("strength must be >= 0")
+        r=experiment(load(a.dataset),a.seed,a.strength,a.threshold,thresholds)
     except ValueError as e:p.error(str(e))
     text=json.dumps(r,ensure_ascii=False,indent=2)+"\n"
     a.output.write_text(text,encoding="utf-8") if a.output else print(text,end="")
